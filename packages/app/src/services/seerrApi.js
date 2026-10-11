@@ -940,6 +940,13 @@ export const getTv = async (tmdbId) => {
 	return request(`/tv/${tmdbId}`);
 };
 
+// Per-episode request status from the request-status Seerr fork
+// (GET /api/v1/tv/:id/status). A stock Seerr answers 404, which the caller
+// treats as "not supported" and stops asking.
+export const getTvRequestStatus = async (tmdbId, is4k = false) => {
+	return request(`/tv/${tmdbId}/status?is4k=${is4k ? 'true' : 'false'}`);
+};
+
 export const getPerson = async (tmdbId) => {
 	return request(`/person/${tmdbId}`);
 };
@@ -1201,6 +1208,7 @@ export default {
 	search,
 	getMovie,
 	getTv,
+	getTvRequestStatus,
 	getPerson,
 	getPersonCombinedCredits,
 	getMediaStatus,

@@ -11,6 +11,8 @@ import {hasMediaFacts} from '../../utils/seerrMediaFacts';
 import {normalizeMediaItem} from '../../utils/seerrHomeRows';
 import {IDLE, bestSearchMatch, seerrTargetFor} from '../../utils/seerrTarget';
 import useSeerrDetailsData from './useSeerrDetailsData';
+import useSeerrRequestStatus from './useSeerrRequestStatus';
+import {hasRequestProgress} from '../../utils/seerrRequestStatus';
 import useSeerrRequests from './useSeerrRequests';
 import useSeerrWatchlist from './useSeerrWatchlist';
 
@@ -72,6 +74,13 @@ const useSeerrOverlay = ({item, seerrOnly, showsSection}) => {
 		mediaId: target.mediaId,
 		mediaType: target.mediaType,
 		contextUser: user
+	});
+
+	// Per-episode progress for a series on its way in (request-status Seerr fork only).
+	const requestStatus = useSeerrRequestStatus({
+		mediaId: target.mediaId,
+		mediaType: target.mediaType,
+		details: data.details
 	});
 
 	const requests = useSeerrRequests({
@@ -151,6 +160,8 @@ const useSeerrOverlay = ({item, seerrOnly, showsSection}) => {
 		onCancel4k,
 		actionError,
 		clearActionError,
+		requestStatus,
+		showsRequestProgress: isActive && hasRequestProgress(requestStatus),
 		// With nothing owned, one control covers both tracks and asks which
 		// quality first when the viewer holds both permissions. A library title
 		// gets a button per track instead, since there the 4K one asks for the

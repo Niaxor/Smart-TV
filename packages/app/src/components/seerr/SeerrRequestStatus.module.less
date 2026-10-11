@@ -1,0 +1,257 @@
+// Per-episode request status. No `gap` (old Tizen engines), spacing is margins.
+
+// ---- state colours ---------------------------------------------------------
+@available: #22c55e;
+@importing: #14b8a6;
+@downloading: #3b82f6;
+@grabbed: #6366f1;
+@searching: #a855f7;
+@queued: #6b7280;
+@notFound: #f59e0b;
+@failed: #ef4444;
+@unaired: #4b5563;
+
+.chip {
+	display: inline-block;
+	flex-shrink: 0;
+	padding: 3px 12px;
+	border-radius: 8px;
+	font-size: 17px;
+	font-weight: 600;
+	white-space: nowrap;
+	color: #fff;
+	background: rgba(107, 114, 128, 0.85);
+}
+
+.available { background: fade(@available, 85%); }
+.importing { background: fade(@importing, 85%); }
+.downloading { background: fade(@downloading, 85%); }
+.grabbed { background: fade(@grabbed, 85%); }
+.searching { background: fade(@searching, 85%); }
+.queued { background: fade(@queued, 85%); }
+.notFound { background: fade(@notFound, 90%); color: #1f1300; }
+.failed { background: fade(@failed, 90%); }
+.unaired { background: fade(@unaired, 85%); }
+
+// ---- bars -------------------------------------------------------------------
+.track {
+	height: 8px;
+	background: rgba(80, 80, 80, 0.85);
+	border-radius: 999px;
+	overflow: hidden;
+}
+
+.thin {
+	height: 5px;
+}
+
+.fill {
+	height: 100%;
+	border-radius: inherit;
+	background: #fff;
+	transition: width 0.6s ease-out;
+
+	:global(.perf-low) & {
+		transition: none;
+	}
+}
+
+.fill_available { background: @available; }
+.fill_importing { background: @importing; }
+.fill_downloading { background: @downloading; }
+.fill_grabbed { background: @grabbed; }
+.fill_searching { background: @searching; }
+.fill_notFound { background: @notFound; }
+.fill_failed { background: @failed; }
+
+// ---- summary under the buttons ---------------------------------------------
+.summary {
+	display: flex;
+	flex-direction: column;
+	max-width: 760px;
+	margin-top: 16px;
+
+	> * + * {
+		margin-top: 8px;
+	}
+}
+
+.summaryHead {
+	display: flex;
+	align-items: center;
+	font-size: 21px;
+	color: rgba(255, 255, 255, 0.8);
+	white-space: nowrap;
+}
+
+.summaryText {
+	flex: 1;
+	min-width: 0;
+	margin-left: 12px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.summaryPct {
+	flex-shrink: 0;
+	margin-left: 12px;
+	font-weight: 600;
+	color: #fff;
+}
+
+.seasonStrip {
+	display: flex;
+	flex-wrap: wrap;
+	margin-top: 4px;
+}
+
+.seasonStripItem {
+	width: 140px;
+	margin: 6px 16px 0 0;
+}
+
+.seasonStripLabel {
+	font-size: 16px;
+	color: rgba(255, 255, 255, 0.65);
+	margin-bottom: 4px;
+	white-space: nowrap;
+}
+
+// ---- Progress tab -------------------------------------------------------------
+.panel {
+	display: flex;
+	flex-direction: column;
+	padding: 8px 0 24px;
+}
+
+.activity {
+	font-size: 19px;
+	color: rgba(255, 255, 255, 0.7);
+	margin-bottom: 14px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.columns {
+	display: flex;
+	align-items: flex-start;
+}
+
+.seasonColumn {
+	width: 460px;
+	flex-shrink: 0;
+	margin-right: 32px;
+}
+
+.episodeColumn {
+	flex: 1;
+	min-width: 0;
+}
+
+.seasonRow {
+	padding: 14px 18px;
+	margin-bottom: 10px;
+	border-radius: 14px;
+	background: rgba(255, 255, 255, 0.06);
+	border: 3px solid transparent;
+
+	> * + * {
+		margin-top: 8px;
+	}
+
+	&.selected {
+		background: rgba(255, 255, 255, 0.12);
+	}
+
+	&:focus,
+	&:global(.spottable):focus {
+		border-color: #fff;
+		background: rgba(255, 255, 255, 0.18);
+	}
+}
+
+.seasonHead {
+	display: flex;
+	justify-content: space-between;
+	font-size: 24px;
+	font-weight: 600;
+	color: #fff;
+}
+
+.seasonMeta {
+	display: flex;
+	align-items: center;
+}
+
+.seasonCounts {
+	margin-left: 10px;
+	min-width: 0;
+	font-size: 17px;
+	color: rgba(255, 255, 255, 0.65);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.episodeRow {
+	padding: 10px 16px;
+	margin-bottom: 6px;
+	border-radius: 10px;
+	background: rgba(255, 255, 255, 0.04);
+	border: 3px solid transparent;
+	border-left-width: 6px;
+
+	> * + * {
+		margin-top: 6px;
+	}
+
+	&:focus {
+		border-color: #fff;
+		background: rgba(255, 255, 255, 0.14);
+	}
+}
+
+.row_notFound { border-left-color: @notFound; }
+.row_failed { border-left-color: @failed; }
+.row_downloading { border-left-color: @downloading; }
+.row_searching { border-left-color: @searching; }
+.row_available { border-left-color: fade(@available, 60%); }
+
+.episodeMain {
+	display: flex;
+	align-items: center;
+	font-size: 21px;
+	color: #fff;
+}
+
+.episodeCode {
+	flex-shrink: 0;
+	width: 190px;
+	font-weight: 600;
+	color: rgba(255, 255, 255, 0.85);
+}
+
+.episodeTitle {
+	flex: 1;
+	min-width: 0;
+	margin-right: 12px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.episodeDetail {
+	font-size: 17px;
+	color: rgba(255, 255, 255, 0.65);
+	padding-left: 190px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.footnote {
+	margin-top: 12px;
+	font-size: 16px;
+	color: rgba(255, 255, 255, 0.5);
+}
