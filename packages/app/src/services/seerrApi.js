@@ -866,7 +866,7 @@ export const getGenreSliderTv = async () => {
 
 // One query builder for every discover browse, since the sort and filter
 // parameters are the same regardless of what the browse was opened on.
-export const discoverFiltered = async (mediaType, {page = 1, sortBy, genre, studio, network, keywords, language, status, voteAverageGte, voteCountGte, withRuntimeGte, withRuntimeLte, releaseDateGte, releaseDateLte} = {}) => {
+export const discoverFiltered = async (mediaType, {page = 1, sortBy, genre, studio, network, keywords, language, status, voteAverageGte, voteCountGte, withRuntimeGte, withRuntimeLte, releaseDateGte, releaseDateLte, watchProviders, watchRegion} = {}) => {
 	const endpoint = mediaType === 'movie' ? 'movies' : 'tv';
 	const params = {
 		page,
@@ -881,6 +881,8 @@ export const discoverFiltered = async (mediaType, {page = 1, sortBy, genre, stud
 		voteCountGte,
 		withRuntimeGte,
 		withRuntimeLte,
+		watchProviders,
+		watchRegion,
 		// The two media types name their release date bounds differently.
 		[mediaType === 'movie' ? 'primaryReleaseDateGte' : 'firstAirDateGte']: releaseDateGte,
 		[mediaType === 'movie' ? 'primaryReleaseDateLte' : 'firstAirDateLte']: releaseDateLte
@@ -891,6 +893,34 @@ export const discoverFiltered = async (mediaType, {page = 1, sortBy, genre, stud
 		.join('&');
 	return request(`/discover/${endpoint}?${query}`);
 };
+
+// --- Browse by streaming service ------------------------------------------
+// Served by the Seerr provider-browse fork (/api/v1/browse/*). Stock Seerr
+// answers these with 404, so callers fall back to the watch-provider endpoints
+// below, which every Seerr has.
+
+const regionQuery = (region) => (region ? `region=${encodeURIComponent(region)}` : '');
+
+export const getBrowseRegions = async () => request('/browse/regions');
+
+export const getBrowseServices = async (region, {all = false} = {}) =>
+	request(`/browse/services?${[regionQuery(region), all ? 'all=true' : ''].filter(Boolean).join('&')}`);
+
+export const getBrowseServiceHome = async (providerId, region) =>
+	request(`/browse/services/${encodeURIComponent(providerId)}?${regionQuery(region)}`);
+
+// Row paths come back from the service home as absolute Seerr API paths
+// (/api/v1/browse/...); the proxy wants them relative to /api/v1.
+export const getBrowseRow = async (path, page = 1) => {
+	const relative = String(path).replace(/^\/?api\/v1\//, '/');
+	const separator = relative.includes('?') ? '&' : '?';
+	return request(`${relative}${separator}page=${page}`);
+};
+
+export const getWatchProviderRegions = async () => request('/watchproviders/regions');
+
+export const getWatchProviders = async (mediaType, region) =>
+	request(`/watchproviders/${mediaType === 'movie' ? 'movies' : 'tv'}?watchRegion=${encodeURIComponent(region)}`);
 
 export const discoverByGenre = async (mediaType, genreId, page = 1) => {
 	return discoverFiltered(mediaType, {genre: genreId, page});
@@ -1142,6 +1172,12 @@ export const proxyImage = async (imageUrl) => {
 };
 
 export default {
+	getBrowseRegions,
+	getBrowseServices,
+	getBrowseServiceHome,
+	getBrowseRow,
+	getWatchProviderRegions,
+	getWatchProviders,
 	setMoonfinConfig,
 	setMoonfinMode,
 	isMoonfinMode,
