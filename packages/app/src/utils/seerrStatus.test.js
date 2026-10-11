@@ -71,6 +71,14 @@ describe('getDownloadSummary', () => {
 		expect(getDownloadSummary([{size: 10, sizeLeft: 0}]).isImporting).toBe(true);
 	});
 
+	test('a season pack listed once per episode counts once', () => {
+		const pack = {size: 10 * GB, sizeLeft: 4 * GB, downloadId: 'HASH'};
+		const summary = getDownloadSummary([pack, {...pack}, {...pack}, {size: 1 * GB, sizeLeft: 0, downloadId: 'OTHER'}]);
+
+		expect(summary.totalBytes).toBe(11 * GB);
+		expect(summary.downloadedBytes).toBe(7 * GB);
+	});
+
 	test('entries without a size are left out, and no sizes at all is nothing', () => {
 		expect(getDownloadSummary([{size: 0}, {}])).toBeNull();
 		expect(getDownloadSummary([])).toBeNull();

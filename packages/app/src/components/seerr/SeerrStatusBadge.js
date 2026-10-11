@@ -1,6 +1,7 @@
 import {memo} from 'react';
 
 import SeerrDownloadProgress from '../SeerrDownloadProgress';
+import {SeerrRequestSummary} from './SeerrRequestStatus';
 import {MEDIA_STATUS} from '../../utils/seerrStatus';
 
 import css from './SeerrStatusBadge.module.less';
@@ -24,6 +25,9 @@ export const SeerrStatusBadge = memo(({seerr, className}) => {
 // The bars only exist while something is genuinely downloading, so the whole block disappears
 // once it lands rather than sitting there at 100%.
 export const SeerrDownloadBars = memo(({seerr}) => {
+	// A series with per-episode status gets the request summary instead: overall and
+	// per-season progress, and what the episodes not downloading are waiting on.
+	if (seerr.showsRequestProgress) return <SeerrRequestSummary status={seerr.requestStatus} />;
 	if (!seerr.isActive || (!seerr.hdDownload && !seerr.download4k)) return null;
 	return (
 		<div className={css.downloads}>

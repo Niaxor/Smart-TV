@@ -9,6 +9,7 @@ import {Scroller} from '@enact/sandstone/Scroller';
 import MediaCard from '../../components/MediaCard';
 import {SeerrStatusBadge, SeerrDownloadBars} from '../../components/seerr/SeerrStatusBadge';
 import {SeerrChips, SeerrFacts, SeerrCollectionBanner} from '../../components/seerr/SeerrSections';
+import {SeerrRequestStatusPanel} from '../../components/seerr/SeerrRequestStatus';
 import RatingsRow from '../../components/RatingsRow';
 import DetailsTabBar from '../../components/DetailsTabBar';
 import ModernActionButtons from './ModernActionButtons';
@@ -271,6 +272,7 @@ const ModernDetailContent = (props) => {
 	// switched off counts as one with nothing in it, so its tab goes the same way.
 	const tabs = useMemo(() => {
 		const list = [];
+		if (seerr.showsRequestProgress) list.push({id: 'requestProgress', label: $L('Progress')});
 		if (isSeries && seasons.length) list.push({id: 'seasons', label: $L('Seasons')});
 		if (listsEpisodes && episodes.length) list.push({id: 'episodes', label: $L('Episodes')});
 		if (isPerson) {
@@ -290,7 +292,7 @@ const ModernDetailContent = (props) => {
 		if (similar.length) list.push({id: 'similar', label: $L('More Like This')});
 		if (seerr.hasTabContent) list.push({id: 'seerr', label: seerr.displayName});
 		return list;
-	}, [isSeries, seasons.length, listsEpisodes, episodes.length, isPerson, personMovies.length, personSeries.length, isAlbum, isPlaylist, albumTracks.length, playlistItems.length, isMusicArtist, artistAlbums.length, isBoxSet, collectionItems.length, collectionSections.length, collectionTabLabel, cast.length, crew.length, studios, chapters, extras.length, showsDetails, similar.length, seerr.hasTabContent, seerr.displayName]);
+	}, [isSeries, seasons.length, listsEpisodes, episodes.length, isPerson, personMovies.length, personSeries.length, isAlbum, isPlaylist, albumTracks.length, playlistItems.length, isMusicArtist, artistAlbums.length, isBoxSet, collectionItems.length, collectionSections.length, collectionTabLabel, cast.length, crew.length, studios, chapters, extras.length, showsDetails, similar.length, seerr.hasTabContent, seerr.displayName, seerr.showsRequestProgress]);
 
 	const [activeTab, setActiveTab] = useState(null);
 	// Expanded Tabs on keeps the first tab open and lets focus follow selection.
@@ -591,6 +593,8 @@ const ModernDetailContent = (props) => {
 				);
 			case 'seerr':
 				return renderSeerrTab();
+			case 'requestProgress':
+				return <SeerrRequestStatusPanel status={seerr.requestStatus} />;
 			default:
 				return null;
 		}

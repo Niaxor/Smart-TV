@@ -90,7 +90,17 @@ if (isTizen()) {
 	registerKeys(ESSENTIAL_KEY_NAMES);
 }
 
-const appElement = (<App />);
+// Dev-only: ?preview=request-status renders the request status UI with fixture data.
+// The production build drops the whole block (and the fixture) as dead code.
+let RequestStatusPreview = null;
+if (process.env.NODE_ENV !== 'production') {
+	if (typeof window !== 'undefined' && String(window.location.search).indexOf('preview=request-status') !== -1) {
+		// eslint-disable-next-line no-undef
+		RequestStatusPreview = require('./views/RequestStatusPreview/RequestStatusPreview').default;
+	}
+}
+
+const appElement = RequestStatusPreview ? (<RequestStatusPreview />) : (<App />);
 
 if (typeof window !== 'undefined') {
 	// The locale strings arrive in their own chunk, so hold the first render until

@@ -96,12 +96,19 @@ export const getIssueStatusInfo = (issue) => {
 // Aggregates the Radarr/Sonarr queue entries Seerr reports in downloadStatus.
 // Sums bytes so a large episode weighs more than a small one. Returns null
 // when nothing is downloading, which falls back to the status chip alone. The
-// byte counts ride along so the bar can say how much is left.
+// byte counts ride along so the bar can say how much is left. Sonarr lists a
+// season pack once per episode, every row carrying the whole pack's size, so
+// rows of the same download count once.
 export const getDownloadSummary = (items) => {
 	if (!Array.isArray(items) || items.length === 0) return null;
 	let total = 0;
 	let left = 0;
+	const seen = new Set();
 	for (const item of items) {
+		if (item && item.downloadId) {
+			if (seen.has(item.downloadId)) continue;
+			seen.add(item.downloadId);
+		}
 		const size = item && item.size;
 		if (typeof size !== 'number' || size <= 0) continue;
 		total += size;
