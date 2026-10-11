@@ -91,10 +91,14 @@ if (isTizen()) {
 }
 
 // Dev-only: ?preview=request-status renders the request status UI with fixture data.
-const previewRequestStatus = process.env.NODE_ENV !== 'production' &&
-	typeof window !== 'undefined' && String(window.location.search).indexOf('preview=request-status') !== -1;
-// eslint-disable-next-line no-undef
-const RequestStatusPreview = previewRequestStatus ? require('./views/RequestStatusPreview/RequestStatusPreview').default : null;
+// The production build drops the whole block (and the fixture) as dead code.
+let RequestStatusPreview = null;
+if (process.env.NODE_ENV !== 'production') {
+	if (typeof window !== 'undefined' && String(window.location.search).indexOf('preview=request-status') !== -1) {
+		// eslint-disable-next-line no-undef
+		RequestStatusPreview = require('./views/RequestStatusPreview/RequestStatusPreview').default;
+	}
+}
 
 const appElement = RequestStatusPreview ? (<RequestStatusPreview />) : (<App />);
 
