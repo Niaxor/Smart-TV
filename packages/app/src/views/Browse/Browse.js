@@ -47,6 +47,7 @@ const Browse = ({
 	onSelectSeerrGenre,
 	onSelectSeerrStudio,
 	onSelectSeerrNetwork,
+	onSelectSeerrService,
 	onOpenSeerrShortcut,
 	isVisible = true,
 	onFocusItemThemeMusic,
@@ -466,6 +467,9 @@ const Browse = ({
 			case 'network':
 				onSelectSeerrNetwork?.(raw.networkId, raw.networkName);
 				break;
+			case 'service':
+				onSelectSeerrService?.(raw.serviceId);
+				break;
 			case 'shortcut':
 				onOpenSeerrShortcut?.(raw.shortcut);
 				break;
@@ -475,7 +479,7 @@ const Browse = ({
 				onSelectSeerrItem?.({...raw, libraryId: item._seerrLibraryId});
 				break;
 		}
-	}, [onSelectSeerrItem, onSelectSeerrGenre, onSelectSeerrStudio, onSelectSeerrNetwork, onOpenSeerrShortcut, rememberFocus]);
+	}, [onSelectSeerrItem, onSelectSeerrGenre, onSelectSeerrStudio, onSelectSeerrNetwork, onSelectSeerrService, onOpenSeerrShortcut, rememberFocus]);
 
 	// External row items that resolved to a library item open as the library item, and the ones
 	// that did not open as the Seerr title they came from.

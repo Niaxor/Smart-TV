@@ -2256,5 +2256,19 @@
 	"{seerrLabel} is disabled by your server administrator.": "{seerrLabel} is disabled by your server administrator.",
 	"{time} remaining": "{time} remaining",
 	"◀ ▶ Navigate": "◀ ▶ Navigate",
-	"◀ ▶ to re-order · DEL to remove": "◀ ▶ to re-order · DEL to remove"
+	"◀ ▶ to re-order · DEL to remove": "◀ ▶ to re-order · DEL to remove",
+	"Streaming Services": "Streaming Services",
+	"Region": "Region",
+	"Choose region": "Choose region",
+	"Trending Shows on {service}": "Trending Shows on {service}",
+	"Trending Movies on {service}": "Trending Movies on {service}",
+	"New Shows on {service}": "New Shows on {service}",
+	"New Movies on {service}": "New Movies on {service}",
+	"Popular Shows on {service}": "Popular Shows on {service}",
+	"Popular Movies on {service}": "Popular Movies on {service}",
+	"Critically Acclaimed Shows on {service}": "Critically Acclaimed Shows on {service}",
+	"Critically Acclaimed Movies on {service}": "Critically Acclaimed Movies on {service}",
+	"Everything here is streaming on {service} in {region}. Pick a title to request it.": "Everything here is streaming on {service} in {region}. Pick a title to request it.",
+	"No streaming services found for this region.": "No streaming services found for this region.",
+	"Streaming availability data provided by JustWatch (via TMDB)": "Streaming availability data provided by JustWatch (via TMDB)"
 }

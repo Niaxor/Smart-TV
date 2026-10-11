@@ -1,0 +1,358 @@
+@import '../../styles/mixins.less';
+
+// Header: title (or service logo + name) with the region pill on the right.
+.header {
+	position: relative;
+	z-index: 20;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	align-items: center;
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	justify-content: space-between;
+	padding: 40px 60px 0 60px;
+	-webkit-flex-shrink: 0;
+	flex-shrink: 0;
+}
+
+// The top navigation bar owns the top of the screen in that layout.
+.headerBelowNav {
+	padding-top: 110px;
+}
+
+.headerService {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	align-items: center;
+}
+
+.headerLogo {
+	width: 72px;
+	height: 72px;
+	border-radius: 16px;
+	margin-right: 24px;
+	object-fit: cover;
+}
+
+.headerTitle {
+	font-size: 48px;
+	font-weight: 700;
+	margin: 0;
+	color: #ffffff;
+	text-shadow: 2px 2px 12px rgba(0, 0, 0, 0.9);
+}
+
+.regionPill {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	align-items: center;
+	background: rgba(24, 24, 24, 0.82);
+	border: 2px solid rgba(255, 255, 255, 0.24);
+	border-radius: 999px;
+	padding: 10px 24px;
+	font-size: 21px;
+	color: #ffffff;
+	cursor: pointer;
+
+	&:focus {
+		border-color: #ffffff;
+		outline: none;
+		-webkit-transform: scale(1.05);
+		transform: scale(1.05);
+	}
+}
+
+.regionPillLabel {
+	color: rgba(255, 255, 255, 0.6);
+	margin-right: 12px;
+}
+
+// Service picker grid
+.gridScroller {
+	-webkit-box-flex: 1;
+	-webkit-flex: 1;
+	flex: 1;
+	overflow-y: auto;
+	overflow-x: hidden;
+	padding: 40px 60px 60px 60px;
+	scrollbar-width: none;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+.serviceGrid {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-wrap: wrap;
+	flex-wrap: wrap;
+}
+
+.serviceCard {
+	position: relative;
+	width: 240px;
+	height: 240px;
+	border-radius: 24px;
+	overflow: hidden;
+	background: rgba(255, 255, 255, 0.08);
+	border: 4px solid transparent;
+	cursor: pointer;
+	outline: none;
+	-webkit-transition: -webkit-transform 0.2s ease;
+	transition: transform 0.2s ease;
+
+	&:focus {
+		-webkit-transform: scale(1.08);
+		transform: scale(1.08);
+		border-color: #ffffff;
+		z-index: 10;
+	}
+}
+
+.serviceLogo {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.serviceInitial {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	align-items: center;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	justify-content: center;
+	font-size: 96px;
+	font-weight: 700;
+	color: rgba(255, 255, 255, 0.7);
+}
+
+.serviceName {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	padding: 28px 12px 10px 12px;
+	font-size: 20px;
+	font-weight: 600;
+	text-align: center;
+	color: #ffffff;
+	background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.85) 100%);
+	background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.85) 100%);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+// Focused title strip on a service page
+.detailStrip {
+	position: relative;
+	z-index: 10;
+	-webkit-flex-shrink: 0;
+	flex-shrink: 0;
+	height: 190px;
+	padding: 20px 60px 0 60px;
+	overflow: hidden;
+}
+
+.detailTitle {
+	font-size: 40px;
+	font-weight: 700;
+	margin: 0 0 10px 0;
+	color: #ffffff;
+	text-shadow: 2px 2px 12px rgba(0, 0, 0, 0.9);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 75%;
+}
+
+.detailRank {
+	color: #e50914;
+	margin-right: 16px;
+}
+
+.detailMeta {
+	font-size: 20px;
+	color: rgba(255, 255, 255, 0.85);
+	margin-bottom: 10px;
+
+	> span + span {
+		margin-left: 18px;
+	}
+}
+
+.detailRating {
+	color: #eab308;
+}
+
+.detailOverview {
+	font-size: 20px;
+	line-height: 1.45;
+	margin: 0;
+	color: rgba(255, 255, 255, 0.92);
+	text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.9);
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	max-width: 60%;
+}
+
+.detailHint {
+	font-size: 22px;
+	color: rgba(255, 255, 255, 0.7);
+	margin: 20px 0 0 0;
+}
+
+.rows {
+	position: relative;
+	z-index: 5;
+}
+
+// Top 10: a big outlined numeral sits to the left of the poster.
+.rankedCard {
+	width: 330px;
+}
+
+.rankNumber {
+	position: absolute;
+	left: -6px;
+	bottom: -18px;
+	font-size: 220px;
+	font-weight: 900;
+	line-height: 1;
+	letter-spacing: -14px;
+	color: #141414;
+	-webkit-text-stroke: 4px rgba(255, 255, 255, 0.85);
+	z-index: 0;
+}
+
+.rankedPoster {
+	margin-left: 90px;
+	width: 240px;
+	z-index: 1;
+}
+
+.attribution {
+	font-size: 16px;
+	color: rgba(255, 255, 255, 0.5);
+	margin: 20px 60px 0 60px;
+}
+
+.error {
+	position: relative;
+	z-index: 10;
+	margin: 20px 60px 0 60px;
+	font-size: 20px;
+	color: #ef4444;
+}
+
+// Region picker overlay
+.regionOverlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 200;
+	background: rgba(0, 0, 0, 0.7);
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	align-items: center;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	justify-content: center;
+}
+
+.regionPanel {
+	width: 640px;
+	height: 760px;
+	background: #181818;
+	border: 1px solid rgba(255, 255, 255, 0.16);
+	border-radius: 16px;
+	padding: 28px 0;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-flex-direction: column;
+	flex-direction: column;
+}
+
+.regionHeading {
+	font-size: 30px;
+	margin: 0 32px 20px 32px;
+	color: #ffffff;
+}
+
+.regionList {
+	-webkit-box-flex: 1;
+	-webkit-flex: 1;
+	flex: 1;
+	overflow-y: auto;
+	scrollbar-width: none;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+.regionItem {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	align-items: center;
+	padding: 14px 32px;
+	font-size: 24px;
+	color: rgba(255, 255, 255, 0.85);
+	cursor: pointer;
+	outline: none;
+
+	&:focus {
+		background: rgba(255, 255, 255, 0.92);
+		color: #000000;
+	}
+}
+
+.regionItemCurrent {
+	font-weight: 700;
+}
+
+.regionCode {
+	display: inline-block;
+	width: 64px;
+	font-weight: 700;
+}
+
+// Spacing (flexbox gap is not available on older TV engines)
+.serviceGrid {
+	.flex-wrap-gap(36px);
+}

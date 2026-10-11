@@ -3,6 +3,7 @@ import seerrApi from '../services/seerrApi';
 import {seerrGenreBackdrop} from './seerrGenreArt';
 import hydrateRequestMediaItems, {hydrateWatchlistItems} from './seerrHydration';
 import {libraryIdOf} from './seerrTarget';
+import {loadServices, readSavedRegion, DEFAULT_REGION} from './serviceBrowse';
 
 const HOME_ROW_LIMIT = 20;
 
@@ -42,7 +43,8 @@ export const getSeerrHomeRowConfigs = () => [
 	{id: 'genreMovies', title: $L('Browse Movies by Genre'), type: 'genre', mediaType: 'movie', cardType: 'landscape'},
 	{id: 'genreTv', title: $L('Browse TV by Genre'), type: 'genre', mediaType: 'tv', cardType: 'landscape'},
 	{id: 'studios', title: $L('Browse by Studio'), type: 'studio', cardType: 'logo'},
-	{id: 'networks', title: $L('Browse by Network'), type: 'network', cardType: 'logo'}
+	{id: 'networks', title: $L('Browse by Network'), type: 'network', cardType: 'logo'},
+	{id: 'services', title: $L('Streaming Services'), type: 'service', cardType: 'logo'}
 ];
 
 // Maps the plugin home section serialized names to the local seerr row config ids
@@ -60,7 +62,8 @@ export const SEERR_SECTION_TO_CONFIG = {
 	seerr_movie_genres: 'genreMovies',
 	seerr_series_genres: 'genreTv',
 	seerr_studios: 'studios',
-	seerr_networks: 'networks'
+	seerr_networks: 'networks',
+	seerr_services: 'services'
 };
 
 export const SEERR_CONFIG_TO_SECTION = Object.fromEntries(
@@ -119,6 +122,7 @@ const normalizeRequestItem = (request) => {
 // without a fetch.
 export const SEERR_SHORTCUTS = [
 	{key: 'discover', name: () => $L('Discover')},
+	{key: 'services', name: () => $L('Streaming Services')},
 	{key: 'movies', name: () => $L('Movies')},
 	{key: 'series', name: () => $L('TV Shows')},
 	{key: 'requests', name: () => $L('Requests')},
@@ -219,6 +223,15 @@ const normalizeNetworkItem = (network) => ({
 	_seerrRaw: {networkId: network.id, networkName: network.name}
 });
 
+const normalizeServiceItem = (service) => ({
+	Id: `seerr-service-${service.id}`,
+	Name: service.name,
+	_externalLogoUrl: service.logoUrl,
+	_seerr: true,
+	_seerrType: 'service',
+	_seerrRaw: {serviceId: service.id, serviceName: service.name}
+});
+
 export const fetchSeerrHomeRow = async (rowId, {userId} = {}) => {
 	try {
 		switch (rowId) {
@@ -254,6 +267,10 @@ export const fetchSeerrHomeRow = async (rowId, {userId} = {}) => {
 				return MOVIE_STUDIOS.map(normalizeStudioItem);
 			case 'networks':
 				return STREAMING_NETWORKS.map(normalizeNetworkItem);
+			case 'services': {
+				const {services} = await loadServices(readSavedRegion() || DEFAULT_REGION);
+				return services.map(normalizeServiceItem);
+			}
 			case 'myRequests': {
 				let resolvedUserId = userId;
 				if (!resolvedUserId) {

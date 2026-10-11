@@ -84,6 +84,7 @@ const SeerrRequests = lazy(() => import('../views/SeerrRequests'));
 const SeerrBrowse = lazy(() => import('../views/SeerrBrowse'));
 const SeerrPerson = lazy(() => import('../views/SeerrPerson'));
 const SeerrCollection = lazy(() => import('../views/SeerrCollection'));
+const SeerrServices = lazy(() => import('../views/SeerrServices'));
 const Games = lazy(() => import('../views/Games'));
 const GameSystem = lazy(() => import('../views/GameSystem'));
 const GameDetails = lazy(() => import('../views/GameDetails'));
@@ -152,7 +153,8 @@ const PANELS = {
 	GAME_DETAILS: 20,
 	GAME_PLAYER: 21,
 	SEERR_COLLECTION: 22,
-	GAME_SYSTEM: 23
+	GAME_SYSTEM: 23,
+	SEERR_SERVICES: 24
 };
 
 const AppContent = (props) => {
@@ -274,6 +276,8 @@ const AppContent = (props) => {
 	// Play from a card's menu opens the item's screen, which starts it once it knows what to play.
 	const [detailsAutoPlay, setDetailsAutoPlay] = useState(false);
 	const [seerrCollection, setSeerrCollection] = useState(null);
+	// Service the streaming-services screen opens on (null = the picker).
+	const [seerrServiceId, setSeerrServiceId] = useState(null);
 	const prevUserIdRef = useRef(null);
 	const [photoViewerItem, setPhotoViewerItem] = useState(null);
 	const [photoViewerItems, setPhotoViewerItems] = useState([]);
@@ -1290,6 +1294,10 @@ const AppContent = (props) => {
 				setSeerrRequestsTab('issues');
 				navigateTo(PANELS.SEERR_REQUESTS);
 				break;
+			case 'services':
+				setSeerrServiceId(null);
+				navigateTo(PANELS.SEERR_SERVICES);
+				break;
 		}
 	}, [navigateTo]);
 
@@ -1350,6 +1358,11 @@ const AppContent = (props) => {
 	const handleSelectSeerrNetwork = useCallback((networkId, networkName) => {
 		setSeerrBrowse({browseType: 'network', item: {id: networkId, name: networkName}, mediaType: 'tv'});
 		navigateTo(PANELS.SEERR_BROWSE);
+	}, [navigateTo]);
+
+	const handleSelectSeerrService = useCallback((serviceId) => {
+		setSeerrServiceId(serviceId || null);
+		navigateTo(PANELS.SEERR_SERVICES);
 	}, [navigateTo]);
 
 	const handleSelectSeerrKeyword = useCallback((keyword, mediaType) => {
@@ -1497,6 +1510,7 @@ const AppContent = (props) => {
 			case PANELS.SEERR_REQUESTS:
 			case PANELS.SEERR_BROWSE:
 			case PANELS.SEERR_PERSON:
+			case PANELS.SEERR_SERVICES:
 				return 'discover';
 			case PANELS.LIBRARY: return selectedLibrary?.Id || '';
 			default: return '';
@@ -1577,6 +1591,7 @@ const AppContent = (props) => {
 								onSelectSeerrGenre={handleSelectSeerrGenre}
 								onSelectSeerrStudio={handleSelectSeerrStudio}
 								onSelectSeerrNetwork={handleSelectSeerrNetwork}
+								onSelectSeerrService={handleSelectSeerrService}
 								onOpenSeerrShortcut={handleOpenSeerrShortcut}
 								isVisible={panelIndex === PANELS.BROWSE && !showSettingsPanel}
 								backHandlerRef={backHandlerRef}
@@ -1804,6 +1819,15 @@ const AppContent = (props) => {
 									system={selectedGameSystem}
 									onSelectGame={handleSelectGame}
 									onBack={handleBack}
+									backHandlerRef={backHandlerRef}
+								/>
+							)}
+						</Panel>
+						<Panel>
+							{panelIndex === PANELS.SEERR_SERVICES && (
+								<SeerrServices
+									initialServiceId={seerrServiceId}
+									onSelectItem={handleSelectSeerrItem}
 									backHandlerRef={backHandlerRef}
 								/>
 							)}
